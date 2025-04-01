@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Typography, Avatar, Space, Button } from 'antd';
+import { Layout, Menu, Typography, Avatar, Space, Button, Modal } from 'antd';
 import {
   UserOutlined,
   HomeOutlined,
@@ -20,10 +20,16 @@ const Navbar = () => {
   const location = useLocation(); // 使用 useLocation 钩子获取当前路由位置
 
   const handleLogout = () => {
-    if (window.confirm('确定退出？')) {
-      logout();
-      navigate('/login');
-    }
+    Modal.confirm({
+      title: '确认退出',
+      content: '确定要退出登录吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        logout();
+        navigate('/login');
+      },
+    });
   };
 
   // 根据当前路由设置选中的菜单项
