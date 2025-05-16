@@ -4,14 +4,15 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
 // 允许特定源，并设置 Access-Control-Allow-Credentials
-// const allowedOrigins = ["http://localhost:5173"];
-const allowedOrigins = ["http://124.221.65.20:8080"];
+const allowedOrigins = ["http://localhost:5173"];
+// const allowedOrigins = ["http://124.221.65.20:8080"];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -32,5 +33,6 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/comments", commentRoutes);
 
 export default app;

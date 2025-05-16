@@ -10,58 +10,26 @@ import {
   Col,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { Pie } from '@ant-design/plots';
 import Navbar from '@/components/Navbar';
 import NoteList from '@/components/NoteList';
 import { useStore } from '@/store/userStore';
-import { createCategory, getCategories } from '@/api/categoryApi';
 import { getNotes } from '@/api/noteApi';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const { Content } = Layout;
 const { Title } = Typography;
-const { confirm } = Modal;
 
 const Home = () => {
   const { user } = useStore();
   const navigate = useNavigate();
   const [recentNotes, setRecentNotes] = useState([]);
-  const [categoryStats, setCategoryStats] = useState([]);
 
   useEffect(() => {
     if (user) {
       loadRecentNotes();
-      loadCategoryStats();
     }
   }, [user]);
-
-  const loadCategoryStats = async () => {
-    try {
-      const [categoriesResponse, notesResponse] = await Promise.all([
-        getCategories(),
-        getNotes(user.id),
-      ]);
-
-      const categories = categoriesResponse.data;
-      const notes = notesResponse.data;
-
-      const stats = categories.map((category) => {
-        const count = notes.filter(
-          (note) => note.category_id === category.id,
-        ).length;
-        return {
-          type: category.name,
-          value: count,
-        };
-      });
-
-      setCategoryStats(stats);
-    } catch (error) {
-      console.error('Failed to fetch category statistics:', error);
-      message.error('获取分类统计失败');
-    }
-  };
 
   const loadRecentNotes = async () => {
     try {
@@ -87,7 +55,8 @@ const Home = () => {
           return;
         }
         try {
-          await createCategory({ name: categoryName, userId: user.id });
+          // Assuming you have a createCategory function in your API
+          // await createCategory({ name: categoryName, userId: user.id });
           message.success('创建分类成功');
           navigate('/categories');
         } catch (error) {
@@ -121,36 +90,16 @@ const Home = () => {
               </Space>
             </div>
             <Row gutter={24}>
-              <Col span={12}>
+              <Col span={24}>
                 <div className="mb-8">
                   <Title level={4}>最近使用</Title>
                   <NoteList notes={recentNotes} />
                 </div>
               </Col>
-              <Col span={12}>
-                <div className="mb-8">
-                  <Title level={4}>分类统计</Title>
-                  {categoryStats.length > 0 && (
-                    <div style={{ height: 300 }}>
-                      <Pie
-                        data={categoryStats}
-                        angleField="value"
-                        colorField="type"
-                        radius={0.8}
-                        label={{
-                          type: 'outer',
-                          content: '{name} {percentage}',
-                        }}
-                        interactions={[{ type: 'element-active' }]}
-                      />
-                    </div>
-                  )}
-                </div>
-              </Col>
             </Row>
           </>
         ) : (
-          <Title level={2}>欢迎来到笔记应用</Title>
+          <Title level={2}>欢迎来到LanceGame游戏社区!</Title>
         )}
       </Content>
     </Layout>

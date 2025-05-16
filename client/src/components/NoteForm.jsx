@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Tag, Select } from 'antd';
+import { Editor } from '@tinymce/tinymce-react';
 
 const NoteForm = ({
   initialValues,
@@ -43,7 +44,9 @@ const NoteForm = ({
 
   // 提交表单时的处理函数
   const handleSubmit = async (values) => {
-    await onSubmit({ ...values, tags });
+    const editorInstance = tinymce.get('content');
+    const content = await editorInstance.getContent();
+    await onSubmit({ ...values, tags, content });
   };
 
   return (
@@ -68,7 +71,17 @@ const NoteForm = ({
         name="content"
         rules={[{ required: true, message: '请输入笔记内容' }]}
       >
-        <Input.TextArea rows={6} placeholder="请输入笔记内容" />
+        <Editor
+          apiKey="ic2y94vg8k2bfqfnpmb3rewlqlt0g568e8wa87akzu7zamll"
+          init={{
+            height: 500,
+            menubar: false,
+            plugins: ['lists', 'link', 'image', 'table', 'code', 'emoticons'],
+            toolbar:
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | image emoticons',
+          }}
+          placeholder="请输入笔记内容"
+        />
       </Form.Item>
 
       {/* 分类选择框 */}

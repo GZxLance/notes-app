@@ -3,7 +3,7 @@ import { List, Card, Tag, Button, Modal, message, Space } from 'antd';
 import { getNotes, deleteNote } from '@/api/noteApi';
 import { useStore } from '@/store/userStore';
 import { useNavigate } from 'react-router-dom';
-import Navbar1 from '@/components/Navbar1';
+import Navbar from '@/components/Navbar';
 
 const Notes = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Notes = () => {
 
   return (
     <>
-      <Navbar1 />
+      <Navbar />
       <div className="flex justify-between items-center p-6">
         <h1>笔记列表</h1>
         <Button type="primary" onClick={() => navigate('/create-note')}>
@@ -45,6 +45,24 @@ const Notes = () => {
         className="p-4"
         renderItem={(item) => (
           <Card className="bg-blue-100 m-2 hoverable">
+            {/* 作者信息展示区域 */}
+            <div
+              style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}
+            >
+              <img
+                src={item.authorAvatar || '/default-avatar.png'}
+                alt="avatar"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  marginRight: 8,
+                }}
+              />
+              <span style={{ fontWeight: 500, fontSize: 14 }}>
+                {item.authorName || '匿名用户'}
+              </span>
+            </div>
             <Card.Meta
               title={item.title}
               description={item.content.substring(0, 100) + '...'}

@@ -31,9 +31,12 @@ const CreateNote = () => {
   // 提交表单时的处理函数
   const handleSubmit = async (values) => {
     try {
+      const editorInstance = tinymce.get('content');
+      const plainText = await editorInstance.getContent({ format: 'text' });
       const noteData = {
         ...values, // 表单提交的所有字段值
         userId: user.id, // 添加当前用户的 ID
+        content: plainText, // 提取编辑器中的纯文本内容
       };
       await createNote(noteData); // 调用 API 创建笔记
       message.success('笔记创建成功'); // 显示成功提示

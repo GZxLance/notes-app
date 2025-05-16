@@ -2,12 +2,24 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Typography, Avatar, Space, Button, Modal } from 'antd';
+import {
+  Layout,
+  Menu,
+  Typography,
+  Avatar,
+  Space,
+  Button,
+  Modal,
+  Dropdown,
+} from 'antd';
 import {
   UserOutlined,
   HomeOutlined,
   AppstoreOutlined,
   FileOutlined,
+  FireOutlined,
+  TrophyOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 import { useStore } from '@/store/userStore';
 
@@ -45,6 +57,38 @@ const Navbar = () => {
         return [];
     }
   }, [location]);
+
+  const menu = (
+    <Menu>
+      <Menu.Item
+        key="userInfo"
+        style={{
+          cursor: 'default',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+          padding: '10px',
+        }}
+      >
+        {user && user.avatar_url ? (
+          <Avatar src={user.avatar_url} size={64} />
+        ) : (
+          <Avatar icon={<UserOutlined />} size={64} />
+        )}
+        <Text style={{ marginTop: '8px' }}>
+          {user && (user.nickname || user.username)}
+        </Text>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="profile" onClick={() => navigate('/profile')}>
+        个人中心
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="logout" onClick={handleLogout}>
+        退出登录
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Header
@@ -90,20 +134,52 @@ const Navbar = () => {
             ),
             onClick: () => navigate('/notes'),
           },
+          {
+            key: 'notes',
+            label: (
+              <Space size="middle">
+                <TrophyOutlined />
+                <span>官方资讯</span>
+              </Space>
+            ),
+            onClick: () => navigate('/notes'),
+          },
+          {
+            key: 'notes',
+            label: (
+              <Space size="middle">
+                <FireOutlined />
+                <span>帖子</span>
+              </Space>
+            ),
+            onClick: () => navigate('/notes'),
+          },
+          {
+            key: 'notes',
+            label: (
+              <Space size="middle">
+                <ThunderboltOutlined />
+                <span>攻略</span>
+              </Space>
+            ),
+            onClick: () => navigate('/notes'),
+          },
         ]}
       />
       <div>
         {user ? (
-          <Space onClick={handleLogout}>
-            {user.avatar_url ? (
-              <Avatar src={user.avatar_url} />
-            ) : (
-              <Avatar icon={<UserOutlined />} />
-            )}
-            <Text className="ml-2 text-white">
-              {user.nickname || user.username}
-            </Text>
-          </Space>
+          <Dropdown overlay={menu} trigger={['hover']}>
+            <Space style={{ cursor: 'pointer' }}>
+              {user.avatar_url ? (
+                <Avatar src={user.avatar_url} />
+              ) : (
+                <Avatar icon={<UserOutlined />} />
+              )}
+              <Text className="ml-2 text-white">
+                {user.nickname || user.username}
+              </Text>
+            </Space>
+          </Dropdown>
         ) : (
           <Button type="primary" onClick={() => navigate('/login')}>
             登录
