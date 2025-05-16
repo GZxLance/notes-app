@@ -107,10 +107,9 @@ const Home = () => {
       <Content className="p-6">
         {user ? (
           <>
-            <Title level={2}>欢迎,{user.nickname || user.username}</Title>
+            <Title level={3}>欢迎,{user.nickname || user.username}</Title>
 
             <div className="mb-8">
-              <Title level={4}>开始</Title>
               <Space size="middle">
                 <Button
                   type="primary"
@@ -131,7 +130,7 @@ const Home = () => {
             <Row gutter={24}>
               <Col span={24}>
                 <div className="mb-8">
-                  <Title level={4}>最新帖子</Title>
+                  {/* <Title level={4}>最新帖子</Title> */}
                   <NoteList notes={recentNotes} />
                 </div>
               </Col>

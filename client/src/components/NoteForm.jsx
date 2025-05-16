@@ -100,18 +100,6 @@ const NoteForm = ({
         </Select>
       </Form.Item>
 
-      {/* noteLimit 输入框 */}
-      {/* <Form.Item
-        label="笔记权限"
-        name="noteLimit"
-        rules={[{ required: true, message: '请选择笔记权限' }]}
-      >
-        <Select placeholder="请选择笔记权限">
-          <Select.Option value={0}>公开</Select.Option>
-          <Select.Option value={1}>私有</Select.Option>
-        </Select>
-      </Form.Item> */}
-
       {/* 标签输入和展示区域 */}
       <div className="mb-4">
         <label className="block mb-2">标签</label>

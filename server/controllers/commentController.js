@@ -60,6 +60,20 @@ export const getCommentsByNoteId = async (req, res) => {
 };
 
 // 删除评论
+// 根据用户ID获取评论列表
+export const getCommentsByUserId = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const [comments] = await db.query(
+      "SELECT * FROM comments WHERE user_id = ? ORDER BY created_at DESC",
+      [user_id]
+    );
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: "获取评论列表失败", error: error.message });
+  }
+};
+
 export const deleteComment = async (req, res) => {
   const { id } = req.params;
   try {

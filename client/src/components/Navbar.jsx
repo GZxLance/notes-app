@@ -98,6 +98,11 @@ const Navbar = () => {
         alignItems: 'center',
       }}
     >
+      <img
+        src="https://wanglanhua.oss-cn-beijing.aliyuncs.com/notesapp/logo.jpg"
+        alt="logo"
+        style={{ width: '40px', height: '40px', marginRight: '16px' }}
+      />
       <Menu
         theme="dark"
         mode="horizontal"
