@@ -135,34 +135,34 @@ const Navbar = () => {
             onClick: () => navigate('/notes'),
           },
           {
-            key: 'notes',
+            key: 'notes1',
             label: (
               <Space size="middle">
                 <TrophyOutlined />
                 <span>官方资讯</span>
               </Space>
             ),
-            onClick: () => navigate('/notes'),
+            onClick: () => navigate('/a'),
           },
           {
-            key: 'notes',
+            key: 'notes2',
             label: (
               <Space size="middle">
                 <FireOutlined />
                 <span>帖子</span>
               </Space>
             ),
-            onClick: () => navigate('/notes'),
+            onClick: () => navigate('/b'),
           },
           {
-            key: 'notes',
+            key: 'notes3',
             label: (
               <Space size="middle">
                 <ThunderboltOutlined />
                 <span>攻略</span>
               </Space>
             ),
-            onClick: () => navigate('/notes'),
+            onClick: () => navigate('/c'),
           },
         ]}
       />

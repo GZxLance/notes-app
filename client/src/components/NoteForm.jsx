@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Tag, Select } from 'antd';
-import { Editor } from '@tinymce/tinymce-react';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
+import ReactMarkdown from 'react-markdown';
 
 const NoteForm = ({
   initialValues,
@@ -18,6 +20,7 @@ const NoteForm = ({
         title: initialValues.title,
         content: initialValues.content,
         categoryId: initialValues.categoryId,
+        noteLimit: initialValues.noteLimit || 0, // 确保noteLimit被设置
       });
       setTags(initialValues.tags || []);
     }
@@ -44,9 +47,12 @@ const NoteForm = ({
 
   // 提交表单时的处理函数
   const handleSubmit = async (values) => {
-    const editorInstance = tinymce.get('content');
-    const content = await editorInstance.getContent();
-    await onSubmit({ ...values, tags, content });
+    await onSubmit({ ...values, tags });
+  };
+
+  // 处理Markdown编辑器内容变化
+  const handleEditorChange = ({ html, text }) => {
+    form.setFieldsValue({ content: text });
   };
 
   return (
@@ -71,16 +77,11 @@ const NoteForm = ({
         name="content"
         rules={[{ required: true, message: '请输入笔记内容' }]}
       >
-        <Editor
-          apiKey="ic2y94vg8k2bfqfnpmb3rewlqlt0g568e8wa87akzu7zamll"
-          init={{
-            height: 500,
-            menubar: false,
-            plugins: ['lists', 'link', 'image', 'table', 'code', 'emoticons'],
-            toolbar:
-              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | image emoticons',
-          }}
-          placeholder="请输入笔记内容"
+        <MdEditor
+          style={{ height: '300px' }}
+          renderHTML={(text) => <ReactMarkdown>{text}</ReactMarkdown>}
+          onChange={handleEditorChange}
+          defaultValue={initialValues?.content}
         />
       </Form.Item>
 
@@ -98,6 +99,18 @@ const NoteForm = ({
           ))}
         </Select>
       </Form.Item>
+
+      {/* noteLimit 输入框 */}
+      {/* <Form.Item
+        label="笔记权限"
+        name="noteLimit"
+        rules={[{ required: true, message: '请选择笔记权限' }]}
+      >
+        <Select placeholder="请选择笔记权限">
+          <Select.Option value={0}>公开</Select.Option>
+          <Select.Option value={1}>私有</Select.Option>
+        </Select>
+      </Form.Item> */}
 
       {/* 标签输入和展示区域 */}
       <div className="mb-4">

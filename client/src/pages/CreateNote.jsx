@@ -39,11 +39,11 @@ const CreateNote = () => {
         content: plainText, // 提取编辑器中的纯文本内容
       };
       await createNote(noteData); // 调用 API 创建笔记
-      message.success('笔记创建成功'); // 显示成功提示
-      navigate('/notes'); // 跳转到笔记列表页面
+      message.success('帖子创建成功'); // 显示成功提示
+      navigate('/notes'); // 跳转到帖子列表页面
     } catch (error) {
       console.error('Failed to create note:', error); // 捕获并打印错误日志
-      message.error('创建笔记失败'); // 显示错误提示
+      message.error('创建帖子失败'); // 显示错误提示
     }
   };
 
@@ -51,13 +51,13 @@ const CreateNote = () => {
     <>
       <Navbar />
       <div className="p-4">
-        <h1>创建笔记</h1>
-        {/* 笔记表单组件 */}
+        <h1>创建帖子</h1>
+        {/* 帖子表单组件 */}
         <NoteForm
           form={form} // 传递表单实例
           onSubmit={handleSubmit} // 传递表单提交处理函数
           categories={categories} // 传递分类列表数据
-          submitButtonText="创建笔记" // 设置提交按钮的文本
+          submitButtonText="创建帖子" // 设置提交按钮的文本
         />
       </div>
     </>

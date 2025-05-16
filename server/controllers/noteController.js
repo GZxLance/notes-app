@@ -23,7 +23,7 @@ export const createNote = async (req, res) => {
 };
 
 // 获取笔记列表
-export const getNotes = async (req, res) => {
+export const getNotesById = async (req, res) => {
   try {
     const { userId } = req.params;
     const [rows] = await pool.query("SELECT * FROM notes WHERE user_id = ?", [
@@ -85,6 +85,18 @@ export const deleteNote = async (req, res) => {
     const { id } = req.params;
     await pool.query("DELETE FROM notes WHERE id = ?", [id]);
     res.status(200).json({ message: "Note deleted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// 获取全部帖子列表
+export const getAllNotes = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM notes ORDER BY updated_at DESC"
+    );
+    res.status(200).json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

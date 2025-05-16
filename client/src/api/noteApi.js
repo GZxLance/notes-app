@@ -6,7 +6,7 @@ export const createNote = async (noteData) => {
 };
 
 // 查询某个用户的所有帖子
-export const getNotes = async (userId) => {
+export const getNotesById = async (userId) => {
   return axiosInstance.get(`/notes/user/${userId}`);
 };
 
@@ -28,4 +28,9 @@ export const updateNote = async (noteId, noteData) => {
 // 删除帖子
 export const deleteNote = async (noteId) => {
   return axiosInstance.delete(`/notes/${noteId}`);
+};
+
+// 获取全部帖子列表
+export const getAllNotes = async () => {
+  return axiosInstance.get('/notes');
 };

@@ -1,54 +1,135 @@
 import React from 'react';
-import { List, Card, Tag, Space } from 'antd';
+import { List, Card, Tag, Space, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const NoteList = ({ notes }) => {
   const navigate = useNavigate();
 
   return (
-    <List
-      grid={{ gutter: 16, column: 1 }}
-      dataSource={notes}
-      renderItem={(note) => (
-        <List.Item>
-          <Card
-            hoverable
-            onClick={() => navigate(`/notes/${note.id}`)}
-            className="w-full mb-4"
-            style={{ borderRadius: '8px' }}
-          >
-            <Card.Meta
-              title={<div className="text-lg font-medium">{note.title}</div>}
-              description={
-                <>
-                  <p className="line-clamp-2 text-gray-600 mt-2 mb-3">
-                    {note.content}
-                  </p>
-                  <Space size={[0, 8]} wrap className="mt-2">
-                    {note.tags &&
-                      (() => {
-                        try {
-                          const parsedTags = JSON.parse(note.tags);
-                          return Array.isArray(parsedTags)
-                            ? parsedTags.map((tag) => (
-                                <Tag color="cyan" key={tag}>
-                                  {tag}
-                                </Tag>
-                              ))
-                            : null;
-                        } catch (error) {
-                          console.error('Failed to parse tags:', error);
-                          return null;
-                        }
-                      })()}
-                  </Space>
-                </>
-              }
-            />
-          </Card>
-        </List.Item>
-      )}
-    />
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 0' }}>
+      <List
+        grid={{ gutter: 16, column: 1 }}
+        dataSource={notes}
+        renderItem={(note) => {
+          // 提取首张图片URL
+          let imgUrl = null;
+          const imgMatch =
+            note.content &&
+            note.content.match(/<img[^>]*src=["']([^"'>]+)["'][^>]*>/i);
+          if (imgMatch) {
+            imgUrl = imgMatch[1];
+          }
+          const authorName =
+            note.authorNickname || note.nickname || note.username || '匿名用户';
+          const authorAvatar =
+            note.authorAvatar || note.avatar_url || '/default-avatar.png';
+          return (
+            <List.Item>
+              <Card
+                hoverable
+                onClick={() => navigate(`/notes/${note.id}`)}
+                style={{ borderRadius: '5px' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  {/* 左侧图片缩略图 */}
+                  {/* {imgUrl && (
+                  <img
+                    src={imgUrl}
+                    alt="note-img"
+                    style={{
+                      width: 196,
+                      height: 152,
+                      objectFit: 'cover',
+                      borderRadius: 8,
+                      marginRight: 16,
+                    }}
+                  />
+                )} */}
+                  <div style={{ flex: 1 }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: 2,
+                      }}
+                    >
+                      <Avatar
+                        src={authorAvatar}
+                        size={32}
+                        style={{ marginRight: 8 }}
+                      />
+                      <span style={{ fontWeight: 500 }}>{authorName}</span>
+                    </div>
+                    <Card.Meta
+                      title={
+                        <div className="text-lg font-medium">{note.title}</div>
+                      }
+                      description={
+                        <>
+                          <p
+                            className="line-clamp-2 text-gray-600 mt-2 mb-3"
+                            style={{ marginBottom: 8 }}
+                          >
+                            {/* 去除图片标签后的纯文本内容 */}
+                            {note.content
+                              // 移除所有图片标签
+                              .replace(/<img[^>]*>/gi, '')
+                              // 移除所有<p>标签，并替换为换行符以便保持段落格式
+                              .replace(/<\/?p[^>]*>/gi, '\n')
+                              // 移除所有<strong>标签，并替换为换行符以便保持段落格式
+                              .replace(/<\/?strong[^>]*>/gi, '\n')
+                              // 替换连续的换行符为单个换行符
+                              .replace(/\n+/g, '\n')
+                              // 去除首尾空白字符
+                              .trim()
+                              // 取前52个字符
+                              .substring(0, 52)}
+                          </p>
+                          <Space size={[0, 8]} wrap className="mt-2">
+                            {note.tags &&
+                              (() => {
+                                try {
+                                  const parsedTags = JSON.parse(note.tags);
+                                  return Array.isArray(parsedTags)
+                                    ? parsedTags.map((tag) => (
+                                        <Tag color="cyan" key={tag}>
+                                          {tag}
+                                        </Tag>
+                                      ))
+                                    : null;
+                                } catch (error) {
+                                  console.error('Failed to parse tags:', error);
+                                  return null;
+                                }
+                              })()}
+                          </Space>
+                          {/* 图片缩略图*/}
+                          {imgUrl && (
+                            <div style={{ marginTop: 0 }}>
+                              <img
+                                src={imgUrl}
+                                alt="note-img"
+                                style={{
+                                  width: 250,
+                                  height: 152,
+                                  objectFit: 'cover',
+                                  borderRadius: 4,
+                                  display: 'block',
+                                }}
+                              />
+                            </div>
+                          )}
+                        </>
+                      }
+                    />
+                  </div>
+                </div>
+              </Card>
+            </List.Item>
+          );
+        }}
+      />
+    </div>
   );
 };
 

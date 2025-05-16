@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { List, Card, Tag, Button, Modal, message, Space } from 'antd';
-import { getNotes, deleteNote } from '@/api/noteApi';
+import { getNotesById, deleteNote } from '@/api/noteApi';
 import { useStore } from '@/store/userStore';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -18,7 +18,7 @@ const Notes = () => {
 
   const fetchNotes = async () => {
     try {
-      const fetchNotesData = await getNotes(user.id);
+      const fetchNotesData = await getNotesById(user.id);
       setNotes(fetchNotesData.data);
     } catch (error) {
       console.error('Failed to fetch notes:', error);
