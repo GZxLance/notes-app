@@ -1,6 +1,11 @@
 import React from 'react';
-import { Card, Button, Divider, QRCode, Space } from 'antd';
-import { PlusOutlined, ProfileOutlined, UserOutlined } from '@ant-design/icons';
+import { Card, Button, Divider, QRCode, Space, FloatButton } from 'antd';
+import {
+  PlusOutlined,
+  ProfileOutlined,
+  UserOutlined,
+  VerticalAlignTopOutlined,
+} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 const HomeSider = () => {
@@ -77,8 +82,31 @@ const HomeSider = () => {
         alt="米游社"
         style={{ width: '100%', borderRadius: 8, marginBottom: 16 }}
       />
+      <Button
+        type="primary"
+        icon={<VerticalAlignTopOutlined />}
+        onClick={scrollToTop}
+        style={{
+          position: 'fixed',
+          right: 24,
+          bottom: 24,
+          width: 56,
+          height: 56,
+          borderRadius: 8,
+          boxShadow: '0 2px 8px #f7e7a3',
+          background: '#FFD600',
+          color: '#333',
+          fontWeight: 600,
+          fontSize: 18,
+          border: 'none',
+        }}
+      />
     </div>
   );
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 export default HomeSider;

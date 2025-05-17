@@ -7,6 +7,7 @@ import {
   deleteNote,
   getNotesByCategory,
   getAllNotes,
+  searchNotesByTitle,
 } from "../controllers/noteController.js";
 
 const router = express.Router();
@@ -18,4 +19,5 @@ router.get("/categories/:categoryId", getNotesByCategory);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
 router.get("/", getAllNotes);
+router.get("/search/title", searchNotesByTitle);
 export default router;

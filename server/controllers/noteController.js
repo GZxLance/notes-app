@@ -1,6 +1,6 @@
 import pool from "../config/db.js";
 
-// 创建笔记
+// 创建帖子
 export const createNote = async (req, res) => {
   try {
     const { userId, title, content, categoryId, tags } = req.body;
@@ -22,7 +22,7 @@ export const createNote = async (req, res) => {
   }
 };
 
-// 获取笔记列表
+// 获取帖子列表
 export const getNotesById = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -35,7 +35,7 @@ export const getNotesById = async (req, res) => {
   }
 };
 
-// 根据分类获取笔记列表
+// 根据分类获取帖子列表
 export const getNotesByCategory = async (req, res) => {
   try {
     const { categoryId } = req.params;
@@ -49,7 +49,7 @@ export const getNotesByCategory = async (req, res) => {
   }
 };
 
-// 获取单个笔记
+// 获取单个帖子
 export const getNote = async (req, res) => {
   try {
     const { id } = req.params;
@@ -64,7 +64,7 @@ export const getNote = async (req, res) => {
   }
 };
 
-// 更新笔记
+// 更新帖子
 export const updateNote = async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,7 +79,7 @@ export const updateNote = async (req, res) => {
   }
 };
 
-// 删除笔记
+// 删除帖子
 export const deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,6 +95,20 @@ export const getAllNotes = async (req, res) => {
   try {
     const [rows] = await pool.query(
       "SELECT * FROM notes ORDER BY updated_at DESC"
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// 根据标题模糊查询帖子
+export const searchNotesByTitle = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    const [rows] = await pool.query(
+      "SELECT * FROM notes WHERE title LIKE ? ORDER BY updated_at DESC",
+      [`%${keyword}%`]
     );
     res.status(200).json(rows);
   } catch (error) {

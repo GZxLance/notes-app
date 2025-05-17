@@ -176,7 +176,8 @@ const Navbar = () => {
           placeholder="搜索..."
           allowClear
           onSearch={(value) => {
-            if (value) navigate(`/notes?search=${encodeURIComponent(value)}`);
+            if (value)
+              navigate(`/notes/search/?q=${encodeURIComponent(value)}`);
           }}
           style={{ width: 200, marginRight: 16 }}
         />

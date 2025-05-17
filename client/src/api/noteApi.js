@@ -34,3 +34,8 @@ export const deleteNote = async (noteId) => {
 export const getAllNotes = async () => {
   return axiosInstance.get('/notes');
 };
+
+// 按标题模糊搜索帖子
+export const searchNotesByTitle = async (keyword) => {
+  return axiosInstance.get(`/notes/search/title`, { params: { keyword } });
+};
