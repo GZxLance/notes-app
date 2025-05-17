@@ -22,6 +22,7 @@ import {
   ThunderboltOutlined,
 } from '@ant-design/icons';
 import { useStore } from '@/store/userStore';
+import { Input } from 'antd';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -49,10 +50,14 @@ const Navbar = () => {
     switch (location.pathname) {
       case '/':
         return ['home'];
-      case '/categories':
-        return ['categories'];
       case '/notes':
         return ['notes'];
+      case '/notes/categories/1':
+        return ['categories1'];
+      case '/notes/categories/2':
+        return ['categories2'];
+      case '/notes/categories/3':
+        return ['categories3'];
       default:
         return [];
     }
@@ -101,7 +106,12 @@ const Navbar = () => {
       <img
         src="https://wanglanhua.oss-cn-beijing.aliyuncs.com/notesapp/logo.jpg"
         alt="logo"
-        style={{ width: '40px', height: '40px', marginRight: '16px' }}
+        style={{
+          width: '40px',
+          height: '40px',
+          marginRight: '16px',
+          borderRadius: '5px',
+        }}
       />
       <Menu
         theme="dark"
@@ -120,58 +130,56 @@ const Navbar = () => {
             onClick: () => navigate('/'),
           },
           {
-            key: 'categories',
-            label: (
-              <Space size="middle">
-                <AppstoreOutlined />
-                <span>分类</span>
-              </Space>
-            ),
-            onClick: () => navigate('/categories'),
-          },
-          {
-            key: 'notes',
-            label: (
-              <Space size="middle">
-                <FileOutlined />
-                <span>笔记</span>
-              </Space>
-            ),
-            onClick: () => navigate('/notes'),
-          },
-          {
-            key: 'notes1',
+            key: 'categories1',
             label: (
               <Space size="middle">
                 <TrophyOutlined />
                 <span>官方资讯</span>
               </Space>
             ),
-            onClick: () => navigate('/a'),
+            onClick: () => navigate('/notes/categories/1'),
           },
           {
-            key: 'notes2',
+            key: 'categories2',
             label: (
               <Space size="middle">
                 <FireOutlined />
-                <span>帖子</span>
+                <span>游戏圈子</span>
               </Space>
             ),
-            onClick: () => navigate('/b'),
+            onClick: () => navigate('/notes/categories/2'),
           },
           {
-            key: 'notes3',
+            key: 'categories3',
             label: (
               <Space size="middle">
                 <ThunderboltOutlined />
-                <span>攻略</span>
+                <span>攻略区</span>
               </Space>
             ),
-            onClick: () => navigate('/c'),
+            onClick: () => navigate('/notes/categories/3'),
+          },
+          {
+            key: 'notes',
+            label: (
+              <Space size="middle">
+                <FileOutlined />
+                <span>我的帖子</span>
+              </Space>
+            ),
+            onClick: () => navigate('/notes'),
           },
         ]}
       />
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <Input.Search
+          placeholder="搜索..."
+          allowClear
+          onSearch={(value) => {
+            if (value) navigate(`/notes?search=${encodeURIComponent(value)}`);
+          }}
+          style={{ width: 200, marginRight: 16 }}
+        />
         {user ? (
           <Dropdown overlay={menu} trigger={['hover']}>
             <Space style={{ cursor: 'pointer' }}>

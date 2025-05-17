@@ -15,9 +15,9 @@ export const getNote = async (noteId) => {
   return axiosInstance.get(`/notes/${noteId}`);
 };
 
-// 查询某个用户某个分类的所有帖子
-export const getNotesByCategory = async (userId, categoryId) => {
-  return axiosInstance.get(`/notes/categories/${userId}/${categoryId}`);
+// 查询某个分类的所有帖子
+export const getNotesByCategory = async (categoryId) => {
+  return axiosInstance.get(`/notes/categories/${categoryId}`);
 };
 
 // 更新帖子

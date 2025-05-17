@@ -1,15 +1,5 @@
-import {
-  Layout,
-  Typography,
-  Button,
-  Modal,
-  Input,
-  Space,
-  message,
-  Row,
-  Col,
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Layout, Typography, Button, Card, Space, message } from 'antd';
+import { PlusOutlined, ProfileOutlined, UserOutlined } from '@ant-design/icons';
 import Navbar from '@/components/Navbar';
 import NoteList from '@/components/NoteList';
 import { useStore } from '@/store/userStore';
@@ -17,6 +7,7 @@ import { getNotesById, getAllNotes } from '@/api/noteApi';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CarouselBanner from '@/components/CarouselBanner';
+import HomeSider from '@/components/HomeSider';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -78,77 +69,138 @@ const Home = () => {
     }
   };
 
-  const handleCreateCategory = () => {
-    Modal.confirm({
-      title: '新建分类',
-      content: <Input placeholder="请输入分类名称" id="categoryName" />,
-      onOk: async () => {
-        const categoryName = document.getElementById('categoryName').value;
-        if (!categoryName.trim()) {
-          message.error('分类名称不能为空');
-          return;
-        }
-        try {
-          // Assuming you have a createCategory function in your API
-          // await createCategory({ name: categoryName, userId: user.id });
-          message.success('创建分类成功');
-          navigate('/categories');
-        } catch (error) {
-          console.error('Failed to create category:', error);
-          message.error('创建分类失败');
-        }
-      },
-    });
-  };
-
   return (
     <Layout>
       <Navbar />
       <Content className="p-6">
         {user ? (
           <>
-            <Title level={3}>欢迎,{user.nickname || user.username}</Title>
-
-            <div className="mb-8">
-              <Space size="middle">
+            {/* 走马灯模块 */}
+            {banners.length > 0 && <CarouselBanner banners={banners} />}
+            {/* <Card
+              variant="outlined"
+              style={{
+                marginBottom: 16,
+                textAlign: 'center',
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+              }}
+              bodyStyle={{ padding: 0 }}
+            >
+              <Space direction="vertical" size={16} style={{ width: '100%' }}>
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}
+                  style={{
+                    background: '#FFD600',
+                    color: '#333',
+                    fontWeight: 600,
+                    fontSize: 18,
+                    border: 'none',
+                    borderRadius: 8,
+                    height: 48,
+                    boxShadow: '0 2px 8px #f7e7a3',
+                  }}
+                  block
                   onClick={() => navigate('/create-note')}
                 >
-                  新建帖子
+                  发布帖子
                 </Button>
-                <Button icon={<PlusOutlined />} onClick={handleCreateCategory}>
-                  新建分类
+                <Button
+                  icon={<ProfileOutlined />}
+                  style={{
+                    background: '#FFD600',
+                    color: '#333',
+                    fontWeight: 600,
+                    fontSize: 18,
+                    border: 'none',
+                    borderRadius: 8,
+                    height: 48,
+                    boxShadow: '0 2px 8px #f7e7a3',
+                  }}
+                  block
+                  onClick={() => navigate('/notes')}
+                >
+                  我的帖子
+                </Button>
+                <Button
+                  icon={<UserOutlined />}
+                  style={{
+                    background: '#FFD600',
+                    color: '#333',
+                    fontWeight: 600,
+                    fontSize: 18,
+                    border: 'none',
+                    borderRadius: 8,
+                    height: 48,
+                    boxShadow: '0 2px 8px #f7e7a3',
+                  }}
+                  block
+                  onClick={() => navigate('/profile')}
+                >
+                  个人中心
                 </Button>
               </Space>
-            </div>
-
-            {/* 走马灯模块 */}
-            {banners.length > 0 && <CarouselBanner banners={banners} />}
-
-            <Row gutter={24}>
-              <Col span={24}>
+            </Card> */}
+            <Layout
+              style={{
+                background: 'transparent',
+                marginTop: 24,
+                marginLeft: 200,
+                display: 'flex',
+              }}
+            >
+              <Content style={{ flex: 1, minWidth: 0, marginRight: 24 }}>
                 <div className="mb-8">
-                  {/* <Title level={4}>最新帖子</Title> */}
                   <NoteList notes={recentNotes} />
                 </div>
-              </Col>
-            </Row>
+              </Content>
+              <Layout.Sider
+                width={440}
+                style={{
+                  background: '#fafbfc',
+                  padding: '0 0 0 8px',
+                  minWidth: 320,
+                  marginTop: 24,
+                }}
+                theme="light"
+              >
+                <HomeSider />
+              </Layout.Sider>
+            </Layout>
           </>
         ) : (
           <>
             <Title level={2}>欢迎来到LanceGame游戏社区!</Title>
             {/* 走马灯模块 */}
             {banners.length > 0 && <CarouselBanner banners={banners} />}
-            <Row gutter={24}>
-              <Col span={24}>
+            <Layout
+              style={{
+                background: 'transparent',
+                marginTop: 24,
+                display: 'flex',
+              }}
+            >
+              <Content style={{ flex: 1, minWidth: 0 }}>
                 <div className="mb-8">
                   <Title level={4}>最新帖子</Title>
                   <NoteList notes={recentNotes} />
                 </div>
-              </Col>
-            </Row>
+              </Content>
+              <Layout.Sider
+                width={440}
+                style={{
+                  background: 'transparent',
+                  padding: '0 0 0 8px',
+                  minWidth: 120,
+                  marginTop: 24,
+                }}
+                theme="light"
+              >
+                <HomeSider />
+              </Layout.Sider>
+            </Layout>
           </>
         )}
       </Content>

@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/", createNote);
 router.get("/user/:userId", getNotesById);
 router.get("/:id", getNote);
-router.get("/categories/:userId/:categoryId", getNotesByCategory);
+router.get("/categories/:categoryId", getNotesByCategory);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
 router.get("/", getAllNotes);

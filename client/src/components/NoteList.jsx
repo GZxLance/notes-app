@@ -59,10 +59,26 @@ const NoteList = ({ notes }) => {
                         style={{ marginRight: 8 }}
                       />
                       <span style={{ fontWeight: 500 }}>{authorName}</span>
+                      <div
+                        style={{
+                          color: '#888',
+                          fontSize: 12,
+                          marginTop: 3.5,
+                          marginLeft: 6,
+                        }}
+                      >
+                        {note.updated_at
+                          ? note.updated_at.slice(0, 10).replace('T', ' ')
+                          : ''}
+                      </div>
                     </div>
                     <Card.Meta
                       title={
-                        <div className="text-lg font-medium">{note.title}</div>
+                        <>
+                          <div className="text-lg font-medium">
+                            {note.title}
+                          </div>
+                        </>
                       }
                       description={
                         <>
@@ -85,24 +101,7 @@ const NoteList = ({ notes }) => {
                               // 取前52个字符
                               .substring(0, 52)}
                           </p>
-                          <Space size={[0, 8]} wrap className="mt-2">
-                            {note.tags &&
-                              (() => {
-                                try {
-                                  const parsedTags = JSON.parse(note.tags);
-                                  return Array.isArray(parsedTags)
-                                    ? parsedTags.map((tag) => (
-                                        <Tag color="cyan" key={tag}>
-                                          {tag}
-                                        </Tag>
-                                      ))
-                                    : null;
-                                } catch (error) {
-                                  console.error('Failed to parse tags:', error);
-                                  return null;
-                                }
-                              })()}
-                          </Space>
+
                           {/* 图片缩略图*/}
                           {imgUrl && (
                             <div style={{ marginTop: 0 }}>
@@ -115,10 +114,24 @@ const NoteList = ({ notes }) => {
                                   objectFit: 'cover',
                                   borderRadius: 4,
                                   display: 'block',
+                                  marginBottom: 10, // 增加的下方外边距，数值可以根据需要调整
                                 }}
                               />
                             </div>
                           )}
+                          <div>
+                            {note.tags.map((tag) => (
+                              <Tag
+                                color="blue"
+                                key={tag}
+                                style={{
+                                  borderRadius: 8,
+                                }}
+                              >
+                                {tag}
+                              </Tag>
+                            ))}
+                          </div>
                         </>
                       }
                     />

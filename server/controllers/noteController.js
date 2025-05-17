@@ -38,10 +38,10 @@ export const getNotesById = async (req, res) => {
 // 根据分类获取笔记列表
 export const getNotesByCategory = async (req, res) => {
   try {
-    const { userId, categoryId } = req.params;
+    const { categoryId } = req.params;
     const [rows] = await pool.query(
-      "SELECT * FROM notes WHERE user_id = ? AND category_id = ?",
-      [userId, categoryId]
+      "SELECT * FROM notes WHERE category_id = ?",
+      [categoryId]
     );
     res.status(200).json(rows);
   } catch (error) {
